@@ -1,0 +1,167 @@
+html,
+body {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: #f4f1eb;
+  color: #171717;
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.site-header,
+.content {
+  width: min(100% - 3rem, 68rem);
+  margin-inline: auto;
+}
+
+.site-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid #d7d1c7;
+}
+
+.site-name,
+nav a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.site-name {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+nav a {
+  color: #6d685f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+nav a:hover,
+.post-preview:hover h3 {
+  color: #8f4d2e;
+}
+
+.content {
+  padding-bottom: 6rem;
+}
+
+.intro {
+  max-width: 42rem;
+  padding-block: clamp(5rem, 14vw, 10rem) clamp(4rem, 10vw, 7rem);
+}
+
+.eyebrow {
+  margin: 0 0 1.25rem;
+  color: #8f4d2e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+}
+
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+.posts {
+  border-top: 1px solid #d7d1c7;
+}
+
+.section-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding-block: 1.25rem;
+}
+
+.section-heading h2 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 400;
+}
+
+.section-heading span {
+  color: #8f4d2e;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.75rem;
+}
+
+.post-list {
+  border-top: 1px solid #d7d1c7;
+}
+
+.post-preview {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 2rem;
+  padding-block: 1.5rem;
+  border-bottom: 1px solid #d7d1c7;
+  color: inherit;
+  text-decoration: none;
+}
+
+.post-preview h3 {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 400;
+  transition: color 160ms ease;
+}
+
+.post-preview p,
+.post-preview time,
+.empty-state {
+  color: #6d685f;
+  font-size: 0.9rem;
+}
+
+.post-preview p {
+  margin: 0.45rem 0 0;
+  line-height: 1.5;
+}
+
+.post-preview time {
+  flex: 0 0 auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.empty-state {
+  margin: 0;
+  padding-block: 1.5rem;
+  border-top: 1px solid #d7d1c7;
+}
+
+@media (max-width: 38rem) {
+  .site-header,
+  .content {
+    width: min(100% - 2rem, 68rem);
+  }
+
+  .post-preview {
+    display: block;
+  }
+
+  .post-preview time {
+    display: block;
+    margin-top: 0.75rem;
+  }
+}

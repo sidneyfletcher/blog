@@ -1,0 +1,4 @@
+base_url = "https://sidneyfletcher.com"
+title = "Sidney Fletcher"
+compile_sass = false
+build_search_index = false

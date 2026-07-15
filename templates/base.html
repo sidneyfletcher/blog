@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ config.title }}{% endblock title %}</title>
+    <link rel="stylesheet" href="{{ get_url(path="style.css") }}">
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="site-name" href="{{ get_url(path="@/_index.md") }}">Sidney Fletcher</a>
+      <nav aria-label="Main navigation">
+        <a href="{{ get_url(path="@/_index.md") }}">Home</a>
+      </nav>
+    </header>
+    {% block content %}{% endblock content %}
+  </body>
+</html>

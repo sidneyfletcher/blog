@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Home · {{ config.title }}{% endblock title %}
+
+{% block content %}
+<main class="content" aria-label="Blog posts">
+  <section class="intro">
+    <p class="eyebrow">Writing</p>
+    <h1>Notes, ideas, and things worth keeping.</h1>
+  </section>
+
+  <section class="posts" aria-labelledby="posts-heading">
+    <div class="section-heading">
+      <h2 id="posts-heading">Posts</h2>
+      <span>{{ section.pages | length }}</span>
+    </div>
+
+    {% if section.pages | length > 0 %}
+      <div class="post-list">
+        {% for page in section.pages %}
+          <a class="post-preview" href="{{ page.permalink }}">
+            <div>
+              <h3>{{ page.title }}</h3>
+              {% if page.description %}<p>{{ page.description }}</p>{% endif %}
+            </div>
+            {% if page.date %}<time datetime="{{ page.date }}">{{ page.date | date(format="%B %d, %Y") }}</time>{% endif %}
+          </a>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="empty-state">No posts yet.</p>
+    {% endif %}
+  </section>
+</main>
+{% endblock content %}
