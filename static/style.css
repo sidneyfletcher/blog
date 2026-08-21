@@ -150,6 +150,88 @@ p {
   border-top: 1px solid #d7d1c7;
 }
 
+.article {
+  max-width: 52rem;
+}
+
+.article-header {
+  padding-block: clamp(4rem, 10vw, 7rem) clamp(3rem, 8vw, 5rem);
+  border-bottom: 1px solid #d7d1c7;
+}
+
+.article-header h1 {
+  max-width: 46rem;
+  font-size: clamp(2.75rem, 7vw, 5.25rem);
+  line-height: 1;
+}
+
+.article-header time {
+  display: block;
+  margin-top: 1.5rem;
+  color: #6d685f;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.72rem;
+}
+
+.article-description {
+  max-width: 38rem;
+  margin: 1.5rem 0 0;
+  color: #6d685f;
+  font-size: 1.1rem;
+  line-height: 1.5;
+}
+
+.article-body {
+  max-width: 44rem;
+  padding-block: 3.5rem 6rem;
+  font-size: 1.08rem;
+  line-height: 1.75;
+}
+
+.article-body h2 {
+  margin: 3.5rem 0 1rem;
+  font-size: 1.8rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 1.15;
+}
+
+.article-body h3 {
+  margin: 2.5rem 0 0.75rem;
+  font-size: 1.3rem;
+  font-weight: 400;
+}
+
+.article-body p,
+.article-body ol {
+  margin-bottom: 1.35rem;
+}
+
+.article-body ol {
+  padding-left: 1.5rem;
+}
+
+.article-body li + li {
+  margin-top: 0.65rem;
+}
+
+.article-body a {
+  color: #8f4d2e;
+}
+
+.article-body code {
+  padding: 0.1em 0.25em;
+  background: #e9e4db;
+  font-size: 0.9em;
+}
+
+.article-body blockquote {
+  margin-inline: 0;
+  padding-left: 1.25rem;
+  border-left: 2px solid #8f4d2e;
+  color: #6d685f;
+}
+
 @media (max-width: 38rem) {
   .site-header,
   .content {
