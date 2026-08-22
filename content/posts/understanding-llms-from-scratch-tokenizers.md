@@ -2,6 +2,7 @@
 title = "Understanding LLMs From Scratch: Tokenizers"
 date = 2026-08-20
 description = "A first-principles tour of tokenizers, subwords, BPE, pretokenization, and the performance work behind Gigatoken."
+url = "/understanding-llms-from-scratch-tokenizers/"
 +++
 
 You wake up, Rip Van Winkle-like, from a deep sleep. It's 2026 and LLM's are taking over the world. Time to learn something about how these work, you think (and write up your notes).

@@ -1,0 +1,44 @@
+baseURL: "https://sidneyfletcher.com/"
+locale: "en-us"
+title: "Sidney Fletcher"
+theme:
+  - PaperMod
+
+pagination:
+  pagerSize: 10
+
+enableRobotsTXT: true
+buildDrafts: false
+buildFuture: false
+buildExpired: false
+
+params:
+  env: production
+  title: "Sidney Fletcher"
+  description: "Notes, ideas, and things worth keeping."
+  author: "Sidney Fletcher"
+  defaultTheme: auto
+  disableThemeToggle: false
+  ShowReadingTime: true
+  ShowShareButtons: false
+  ShowPostNavLinks: true
+  ShowBreadCrumbs: true
+  ShowCodeCopyButtons: true
+  homeInfoParams:
+    Title: "Notes, ideas, and things worth keeping."
+    Content: "Writing about technology, systems, and whatever I’m trying to understand."
+
+menu:
+  main:
+    - identifier: home
+      name: Home
+      url: /
+      weight: 10
+
+mainSections:
+  - posts
+
+outputs:
+  home:
+    - HTML
+    - RSS

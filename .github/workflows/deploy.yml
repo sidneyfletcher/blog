@@ -1,4 +1,4 @@
-name: Deploy Zola site
+name: Deploy Hugo site
 
 on:
   push:
@@ -19,10 +19,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: taiki-e/install-action@v2
         with:
-          tool: zola@0.20.0
-      - run: zola build
+          submodules: recursive
+      - uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.165.0'
+          extended: true
+      - run: hugo --gc --minify
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
