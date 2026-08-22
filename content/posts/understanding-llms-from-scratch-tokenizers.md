@@ -1,7 +1,6 @@
 +++
 title = "Understanding LLMs From Scratch: Tokenizers"
 date = 2026-08-20
-description = "A first-principles tour of tokenizers, subwords, BPE, pretokenization, and the performance work behind Gigatoken."
 url = "/understanding-llms-from-scratch-tokenizers/"
 +++
 

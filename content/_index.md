@@ -1,4 +1,4 @@
 +++
 title = "Home"
-description = "Notes, ideas, and things worth keeping."
+description = "AI, languages and odd bits that interest me."
 +++
