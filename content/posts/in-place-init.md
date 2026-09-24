@@ -26,19 +26,23 @@ impl Cat {
 }
 
 fn main() {
-    let cat = Cat::new(12); // pinned
-    assert_eq!(cat.age(), &12);
+    let cat = Cat::new(12); // could also be `let pin cat`
+    assert_eq!(cat.age(), &12); // Pin<&T> derefs to &T
 }
 ```
 
-Semantically, RPPR works by requiring the caller to supply a destination place for T and pass a hidden out pointer that the callee uses to construct the value (subject to target ABI rules). After construction, the destination place is pinned (but if the value is `Unpin`, it can be moved immediately out of this state).
+So how does it work? Today, when you return a type `T` from a function, this is conceptually a move from the callee to the caller (e.g. from `Cat::new` to `main`). By applying the `pin` modifier to T, you declare that the compiler can't move the value; the value is pinned in memory between the callee's return statement and caller. And since the value remains pinned after you return to the caller function, the compiler will not allow you to take a `&mut T` reference to it if the type is `!Unpin`, only a mutable `Pin<&mut T>` reference.
+  
+Note that this is different from how the pin concept exists in the language today. `std::pin::Pin` only works on reference/pointer types, but `pin T` is a modifier on values which transfers ownership (in this case, return values). By analogy, a `&mut T` reference is to `Pin<&mut T>` as a `T` is to `pin T`. This isn't expressible as a library type but I think it's the missing primitive for address-sensitive types.
+
+On a slightly lower level, this works by requiring the caller to supply a pinned destination place then pass a hidden out pointer that the callee uses to construct the value (subject to target ABI rules) [^2].
 
 Here's my design reasoning:
 
 1. I think Rust really got the initialization story right: no constructors, total fields, just create the struct. Maintaining this illusion is a good thing.
 2. In-place init is an edge case - in most cases people should just keep returning normal values and trust that the compiler/ABI/CPU gods will pick the most optimal thing. Hence, try to minimize new concepts & surface syntax.
-3. Guaranteed value elimination [(GVE)](https://github.com/PoignardAzur/in-place-init-overview/blob/main/solutions/gve-with-init/README.md) is attractive for these reasons but would have ABI consequences. C++, which has similar guaranteed copy-elision semantics, allows implementations to return small value types like `Cat` in registers for performance reasons[^2] This is surprising given that it's supposed to be a guarantee!
-4. Hence, some sort of surface syntax is needed for placing functions in Rust. The motivation & closest concept in the language today is `pin`; building on this links to how people solve this today.
+3. Guaranteed value elimination [(GVE)](https://github.com/PoignardAzur/in-place-init-overview/blob/main/solutions/gve-with-init/README.md) is attractive for these reasons but would have ABI consequences. C++, which has similar guaranteed copy-elision semantics, allows implementations to return small value types like `Cat` in registers for performance reasons[^3] This is surprising given that it's supposed to be a guarantee!
+4. Hence, some sort of surface syntax is needed for placing functions in Rust. It's easiest to understand this as a constraint on the return type of the function and since pin already denotes address-sensitivity, it's a natural fit.
 
 ## What about Move?
 
@@ -89,7 +93,7 @@ impl CoupleOfThings {
 }
 ```
 
-In this case, `Self throws Error` does _not_ desugar to `Result<T, Error>`[^3] However, it does impl `Try` and presumably has some easy way to convert it back to a `Result` (plus some sugar as needed).
+In this case, `Self throws Error` does _not_ desugar to `Result<T, Error>`[^4] However, it does impl `Try` and presumably has some easy way to convert it back to a `Result` (plus some sugar as needed).
 
 ## Box constructor
 
@@ -101,12 +105,12 @@ pub struct PinnedThing { ... }
 fn make_thing() -> pin PinnedThing;
 
 impl<T> Box<T> {
-    pub fn new_with(callback: impl FnOnce() -> pin T) -> pin Self {
-        let allocation = Box::<T>::new_uninit().into_pin();
-        let ptr: *pin mut T = allocation.as_mut_ptr();
+    pub fn new_with(callback: impl FnOnce() -> pin T) -> Pin<Self> {
+        let allocation = Box::<T>::new_uninit();
+        let ptr: *mut T = allocation.as_mut_ptr();
         unsafe {
             *ptr = callback();
-            allocation.assume_init()
+            allocation.assume_init().into_pin()
         }
     }
 }
@@ -119,7 +123,7 @@ That said, people should still prefer to use `Box::new` for most use cases, both
 
 ## Observe address
 
-Similar to GVE, this proposal would lean on MIR move elimination to elide places and make sure that a pinned value isn't moved.
+Similar to GVE, this proposal would lean on MIR move elimination to elide moves in function bodies:
 
 ```rust
 pub struct SelfRef {
@@ -159,5 +163,6 @@ impl<T> MaybeUninit<T> {
 Anyways, this is my proposal - if it's crazy please feel free to tell me to put a pin in it! (but please do so nicely)
 
 [^1]: I know technically Rust doesn't say r-values but RPPV doesn't have quite the same ring, does it?
-[^2]: I believe the way around this is to make it not trivially destructible?
-[^3]: You could give it the [Herbception ABI](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2544r0.html) even!
+[^2]: I don't know that the language _needs_ to guarantee out-pointers here, but it seems useful.
+[^3]: I believe the way around this is to make it not trivially destructible?
+[^4]: You could give it the [Herbception ABI](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2022/p2544r0.html) even!
